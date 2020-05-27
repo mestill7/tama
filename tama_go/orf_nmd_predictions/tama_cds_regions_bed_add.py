@@ -206,13 +206,13 @@ for line in pbri_file_contents:
     
     # look into why sometimes cds_coord_end is 0 !!!!!!
     if cds_coord_end == 0:
-        print("Error with cds_coord_end == 0" +trans_id)
+        print(("Error with cds_coord_end == 0" +trans_id))
         sys.exit()
         
     #Check to see length is the same as sequence file
     if block_sum != trans_len_dict[trans_id]:
         print("Mismatching lengths!")
-        print(trans_id + "\t" + str(block_sum) + "\t" + str(trans_len_dict[trans_id]))
+        print((trans_id + "\t" + str(block_sum) + "\t" + str(trans_len_dict[trans_id])))
         sys.exit()
         
     exon_nums = len(block_list)

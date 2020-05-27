@@ -114,7 +114,7 @@ class Transcript:
             self.start_codon = start_obj
         else:
             print("Multiple start codons")
-            print(self.trans_id)
+            print((self.trans_id))
             self.start_codon = "multiple"
 
         
@@ -130,7 +130,7 @@ class Transcript:
             self.stop_codon = stop_obj
         else:
             print("Multiple stop codons")
-            print(self.trans_id)
+            print((self.trans_id))
             self.stop_codon = "multiple"
             
         
@@ -478,7 +478,7 @@ for trans_id in trans_list:
     else:
         print("Error with UTR numbers")
         print(trans_id)
-        print(len(u_start_list))
+        print((len(u_start_list)))
         #print(u_start_list)
         #print(u_end_list)
         #print(e_starts)
@@ -541,7 +541,7 @@ for trans_id in trans_list:
                 if last_utr_start - stop_codon_adjust != cds_end + 1:
                     print("Error with utr versus cds_end")
                     print(trans_id)
-                    print(str(last_utr_start) + "\t" + str(cds_end))
+                    print((str(last_utr_start) + "\t" + str(cds_end)))
                     #sys.exit()
             
             bed_cds_start = cds_start

@@ -4,12 +4,12 @@ import re
 import sys
 import time
 from Bio import SeqIO
-from StringIO import StringIO
+from io import StringIO
 from Bio import AlignIO
 import os
 import argparse
 
-from __init__ import __version__
+from .__init__ import __version__
 
 """
 Transcriptome Annotation by Modular Algorithms (TAMA)
@@ -155,7 +155,7 @@ def track_time(start_time,prev_time):
     tt_minutes = leftover_time / 60
     leftover_time = time_taken - (tt_minutes * 60)
     tt_seconds = leftover_time
-    print("time taken since last check:\t" +  str(tt_hours) + ":" + str(tt_minutes) + ":" + str(tt_seconds) )
+    print(("time taken since last check:\t" +  str(tt_hours) + ":" + str(tt_minutes) + ":" + str(tt_seconds) ))
     
     time_total = int(end_time - start_time)
     tt_hours = time_total / 60
@@ -164,7 +164,7 @@ def track_time(start_time,prev_time):
     tt_minutes = leftover_time / 60
     leftover_time = time_total - (tt_minutes * 60)
     tt_seconds = leftover_time
-    print("time taken since beginning:\t" +  str(tt_hours) + ":" + str(tt_minutes) + ":" + str(tt_seconds) )
+    print(("time taken since beginning:\t" +  str(tt_hours) + ":" + str(tt_minutes) + ":" + str(tt_seconds) ))
     
     this_time = end_time
     
@@ -224,7 +224,7 @@ class Transcript:
         if block_start_list[-1] == "":
             block_start_list.pop(-1)
         
-        for i in xrange(len(block_size_list)):
+        for i in range(len(block_size_list)):
             rel_exon_start = int(block_start_list[i])
             rel_exon_end = rel_exon_start + int(block_size_list[i])
             
@@ -251,7 +251,7 @@ class Transcript:
         exon_start_string_list = []
         exon_end_string_list = []
         
-        for i in xrange(len(self.exon_start_list)):
+        for i in range(len(self.exon_start_list)):
             
             exon_start_string_list.append(str(self.exon_start_list[i]))
             exon_end_string_list.append(str(self.exon_end_list[i]))
@@ -283,7 +283,7 @@ class Transcript:
         
         relative_exon_start_list = []
         exon_length_list = []
-        for i in xrange(self.num_exons):
+        for i in range(self.num_exons):
             exon_start = self.exon_start_list[i]
             exon_end = self.exon_end_list[i]
             exon_length = exon_end - exon_start
@@ -368,7 +368,7 @@ class Merged:
         
         self.merged_trans_dict[merged_trans_id] = trans_obj
         
-        merged_trans_id_list = self.merged_trans_dict.keys()
+        merged_trans_id_list = list(self.merged_trans_dict.keys())
         self.num_trans = len(merged_trans_id_list)
         
         if self.num_exons < int(trans_obj.num_exons):
@@ -402,7 +402,7 @@ class Merged:
         #print(collapse_start_list)
         #print(collapse_end_list)
         
-        for i in xrange(len(collapse_start_list)):
+        for i in range(len(collapse_start_list)):
             e_start = collapse_start_list[i]
             e_end = collapse_end_list[i]
             
@@ -462,7 +462,7 @@ class Merged:
         
         relative_exon_start_list = []
         exon_length_list = []
-        for i in xrange(self.num_exons):
+        for i in range(self.num_exons):
             exon_start = self.collapse_start_list[i]
             exon_end = self.collapse_end_list[i]
             exon_length = exon_end - exon_start
@@ -501,7 +501,7 @@ class Merged:
         
         start_wobble_string_list = []
         end_wobble_string_list = []
-        for i in xrange(len(self.start_wobble_list)):
+        for i in range(len(self.start_wobble_list)):
             start_wobble_string = str(self.start_wobble_list[i])
             start_wobble_string_list.append(start_wobble_string)
             end_wobble_string = str(self.end_wobble_list[i])
@@ -562,7 +562,7 @@ def compare_transcripts_both_capped(trans_obj,o_trans_obj,fivecap_flag,o_fivecap
     #check cap flag, both transcripts should be capped
     if fivecap_flag != "capped" or o_fivecap_flag != "capped":
         print("Error, both transcripts need to be from capped libraries!")
-        print(fivecap_flag + " " + o_fivecap_flag)
+        print((fivecap_flag + " " + o_fivecap_flag))
         sys.exit()
     
     diff_num_exon_flag = 0
@@ -597,7 +597,7 @@ def compare_transcripts_both_capped(trans_obj,o_trans_obj,fivecap_flag,o_fivecap
         
         all_match_flag = 1 # 1 if all matching and 0 if at least one not matching
         
-        for i in xrange(min_exon_num): # iterate from 3' end of transcript, strand corrected
+        for i in range(min_exon_num): # iterate from 3' end of transcript, strand corrected
             
             if strand == "+":
                 j = -1 * (i + 1) #iterate from last exon to account for possible 5' degradation for forward strand
@@ -671,7 +671,7 @@ def compare_transcripts_capped_nocap(trans_obj,o_trans_obj,fivecap_flag,o_fiveca
         n_fivecap_flag = fivecap_flag
     else:
         print("Error with cap flags, one needs to be capped and the other no cap")
-        print(fivecap_flag +" "+o_fivecap_flag)
+        print((fivecap_flag +" "+o_fivecap_flag))
         sys.exit()
     
     diff_num_exon_flag = 0
@@ -717,7 +717,7 @@ def compare_transcripts_capped_nocap(trans_obj,o_trans_obj,fivecap_flag,o_fiveca
 
         all_match_flag = 1  # 1 if all matching and 0 if at least one not matching
 
-        for i in xrange(min_exon_num):  # iterate from 3' end of transcript, strand corrected
+        for i in range(min_exon_num):  # iterate from 3' end of transcript, strand corrected
 
             if strand == "+":
                 j = -1 * (i + 1)  # iterate from last exon to account for possible 5' degradation for forward strand
@@ -910,7 +910,7 @@ def compare_transcripts_both_nocap(trans_obj,o_trans_obj,fivecap_flag,o_fivecap_
 
     all_match_flag = 1  # 1 if all matching and 0 if at least one not matching
 
-    for i in xrange(min_exon_num):  # iterate from 3' end of transcript, strand corrected
+    for i in range(min_exon_num):  # iterate from 3' end of transcript, strand corrected
 
         if strand == "+":
             j = -1 * (i + 1)  # iterate from last exon to account for possible 5' degradation for forward strand
@@ -1025,7 +1025,7 @@ def collapse_transcripts(trans_obj_list,collapse_flag): #use this to collapse tr
     try:
         collapse_flag
     except NameError:
-        print "collapse_flag not defined, using default of most commond ends"
+        print("collapse_flag not defined, using default of most commond ends")
         collapse_flag == "common_ends"
     
     max_exon_num = 0
@@ -1072,7 +1072,7 @@ def collapse_transcripts(trans_obj_list,collapse_flag): #use this to collapse tr
     #track how much wobble for the starts and end in the collapse
     start_wobble_list = []
     end_wobble_list = []
-    for i in xrange(max_exon_num): #go from 3 prime end
+    for i in range(max_exon_num): #go from 3 prime end
         if strand == "+":
             j = -1 * (i + 1) #iterate from last exon to account for possible 5' degradation for forward strand
         elif strand == "-":
@@ -1122,7 +1122,7 @@ def collapse_transcripts(trans_obj_list,collapse_flag): #use this to collapse tr
             elif i <  max_exon_num - 1 and i == len(e_start_list)-1 :
                 if this_cap_flag != "no_cap": # this situation should only happen with nocap reads
                     print("Error with capped transcript treated like no_cap")
-                    print(trans_obj.trans_id)
+                    print((trans_obj.trans_id))
                     sys.exit()
 
                 if strand == "+":
@@ -1168,7 +1168,7 @@ def collapse_transcripts(trans_obj_list,collapse_flag): #use this to collapse tr
                     e_end_priority_dict[e_end_priority] = 1
             else:
                 print("no assignment of exon number within transcript group")
-                print(trans_obj.trans_id)
+                print((trans_obj.trans_id))
                 sys.exit()
 
             if e_start != -1:
@@ -1235,7 +1235,7 @@ def collapse_transcripts(trans_obj_list,collapse_flag): #use this to collapse tr
         if num_most_starts > 1:
             best_e_start = most_long_e_start
             if num_trans > 2:
-                print("more than one best e start! " + str(best_e_start) + " num_trans: " + str(num_trans))
+                print(("more than one best e start! " + str(best_e_start) + " num_trans: " + str(num_trans)))
         ##########################################
         
         e_start_wobble = short_e_start - long_e_start
@@ -1274,7 +1274,7 @@ def collapse_transcripts(trans_obj_list,collapse_flag): #use this to collapse tr
         if num_most_ends > 1:
             best_e_end = most_long_e_end
             if num_trans > 2:
-                print("more than one best e end! " + str(best_e_end) + " num_trans: " + str(num_trans))
+                print(("more than one best e end! " + str(best_e_end) + " num_trans: " + str(num_trans)))
         ##########################################
         
         e_end_wobble = long_e_end - short_e_end
@@ -1297,8 +1297,8 @@ def collapse_transcripts(trans_obj_list,collapse_flag): #use this to collapse tr
         collapse_end_list.append(best_e_end)
 
     #put the coords in the right order maintaining order with wobble lists
-    collapse_start_list, start_wobble_list = zip(*sorted(zip(collapse_start_list, start_wobble_list)))
-    collapse_end_list, end_wobble_list = zip(*sorted(zip(collapse_end_list, end_wobble_list)))
+    collapse_start_list, start_wobble_list = list(zip(*sorted(zip(collapse_start_list, start_wobble_list))))
+    collapse_end_list, end_wobble_list = list(zip(*sorted(zip(collapse_end_list, end_wobble_list))))
     
     collapse_start_list = list(collapse_start_list)
     start_wobble_list = list(start_wobble_list)
@@ -1329,9 +1329,9 @@ def gene_group(trans_obj_list): #groups trans into genes, does not take into acc
         trans_gene_dict[uniq_trans_id] = gene_count
         
     
-    for i in xrange(len(trans_obj_list)):
+    for i in range(len(trans_obj_list)):
         trans_obj = trans_obj_list[i]
-        for j in xrange(i+1,len(trans_obj_list)):
+        for j in range(i+1,len(trans_obj_list)):
             o_trans_obj = trans_obj_list[j]
 
             uniq_trans_id  = trans_obj.uniq_trans_id
@@ -1355,8 +1355,8 @@ def gene_group(trans_obj_list): #groups trans into genes, does not take into acc
             
             overlap_flag = 0
             
-            for i in xrange(num_exons): #search for overlapping exons
-                for j in xrange(o_num_exons):
+            for i in range(num_exons): #search for overlapping exons
+                for j in range(o_num_exons):
                     exon_start = exon_start_list[i]
                     exon_end = exon_end_list[i]
                     o_exon_start = o_exon_start_list[j]
@@ -1460,7 +1460,7 @@ def gene_group(trans_obj_list): #groups trans into genes, does not take into acc
             sys.exit()
         start_gene_dict[gene_start] = gene_num
     
-    start_gene_list = start_gene_dict.keys()
+    start_gene_list = list(start_gene_dict.keys())
     start_gene_list.sort()
     
     gene_start_trans_dict = {} # gene_start_trans_dict[gene start][trans id] = 1
@@ -1490,7 +1490,7 @@ def iterate_sort_list(list_trans_pos_list,pos_index):
         same_order_index_dict = {}  # same_order_index_dict[pos][index] = 1
 
         # collect positions and index where the sort was equal
-        for j in xrange(len(list_trans_pos_list)):
+        for j in range(len(list_trans_pos_list)):
 
             trans_pos_line_split = list_trans_pos_list[j]
             pos_element = trans_pos_line_split[pos_index]
@@ -1589,7 +1589,7 @@ def sort_pos_trans_list(pos_trans_list,pos_trans_dict):
         diff_pos = max_pos_num - len(trans_pos_line_split)
 
         # pad out list so all pos lists have same number of elements
-        for i in xrange(diff_pos):
+        for i in range(diff_pos):
             trans_pos_line_split.append(0)
 
         trans_pos_line_split_str = []
@@ -1654,7 +1654,7 @@ def sort_transcripts(trans_obj_list,trans_obj_dict):
 
         num_exons = len(trans_exon_start_list)
 
-        for i in xrange(num_exons):
+        for i in range(num_exons):
             exon_start = trans_exon_start_list[i]
             trans_pos_list.append(str(exon_start))
             trans_pos_list.append(",")
@@ -1676,9 +1676,9 @@ def sort_transcripts(trans_obj_list,trans_obj_dict):
             new_trans_list = trans_obj.trans_list            
 
             print("Duplicate transcript positions in transcript sorting!")
-            print(trans_obj.merged_trans_dict.keys())
-            print(str(trans_start)+" "+str(trans_end))
-            print(pos_trans_dict[trans_pos_line].merged_trans_dict.keys())
+            print((list(trans_obj.merged_trans_dict.keys())))
+            print((str(trans_start)+" "+str(trans_end)))
+            print((list(pos_trans_dict[trans_pos_line].merged_trans_dict.keys())))
             this_bed_line = trans_obj.format_bed_line()
             other_bed_line = pos_trans_dict[trans_pos_line].format_bed_line()
             print(this_bed_line)
@@ -2076,7 +2076,7 @@ class TransGroup:
             self.trans_group_dict[trans_a] = {}
         else:
             # this happens if trans_a is a nocap trans in which case it can be in multiple groups
-            print("trans_a already in group, should be nocap trans: " + trans_a)
+            print(("trans_a already in group, should be nocap trans: " + trans_a))
             
         self.trans_group_dict[trans_a][b_group_num] = 1
         self.group_trans_dict[b_group_num][trans_a] = 1
@@ -2092,7 +2092,7 @@ class TransGroup:
 ##############################################################################
 
     def add_a_to_b_group_both_nocap(self,trans_a,trans_b,trans_obj_dict):
-        print("invoke add_a_to_b_group_both_nocap " + trans_a + " " + trans_b)
+        print(("invoke add_a_to_b_group_both_nocap " + trans_a + " " + trans_b))
         # add trans_a to b group and if a trans_a is longest nocap trans in it's group add other nocap trans
         if len(list(self.trans_group_dict[trans_b].keys())) > 1:
             print("multiple groups")
@@ -2104,8 +2104,8 @@ class TransGroup:
         
         if trans_obj_a.num_exons >= trans_obj_b.num_exons:
             print("Error trans_a does not have fewer exons than trans_b")
-            print(trans_a + " " + trans_b)
-            print(str(trans_obj_a.num_exons) + " " + str(trans_obj_b.num_exons))
+            print((trans_a + " " + trans_b))
+            print((str(trans_obj_a.num_exons) + " " + str(trans_obj_b.num_exons)))
             sys.exit()
         
         #remove initial nocap group that is a self identity group
@@ -2122,7 +2122,7 @@ class TransGroup:
             
         else:
             # this happens if trans_a is a nocap trans in which case it can be in multiple groups
-            print("trans_a already in group, should be nocap trans: " + trans_a)
+            print(("trans_a already in group, should be nocap trans: " + trans_a))
         
         for b_group_num in list(self.trans_group_dict[trans_b].keys()):
             # add a trans to b group
@@ -2134,7 +2134,7 @@ class TransGroup:
                 if a_group_num == b_group_num:
                     continue
                 
-                print(str(a_group_num) + "-a and b group num-" + str(b_group_num))
+                print((str(a_group_num) + "-a and b group num-" + str(b_group_num)))
                 a_trans_id_list = list(self.group_trans_dict[a_group_num].keys())
                 a_longest_trans_flag = longest_transcript(trans_a,a_trans_id_list,trans_obj_dict)
                 
@@ -2243,7 +2243,7 @@ class TransGroup:
         self.group_trans_dict.pop(b_group_num, None)
 
         print("merge_a_b_groups")
-        print(self.group_count)
+        print((self.group_count))
         print(trans_a)
         print(trans_b)
         
@@ -2253,7 +2253,7 @@ class TransGroup:
     def merge_a_b_groups_nocap_old(self,trans_a,trans_b,trans_obj_dict):
         
         self.group_count += 1
-        print("invoke merge_a_b_groups_nocap " + str(self.group_count)+ " " + trans_a + " " +trans_b )
+        print(("invoke merge_a_b_groups_nocap " + str(self.group_count)+ " " + trans_a + " " +trans_b ))
         #only cap lib trans should be used for merging groups
         if len(list(self.trans_group_dict[trans_a].keys())) > 1:
             print("multiple groups a nocap")
@@ -2267,8 +2267,8 @@ class TransGroup:
         
         if trans_obj_a.num_exons != trans_obj_b.num_exons:
             print("Error trans_a does not same num exons as trans_b")
-            print(trans_a + " " + trans_b)
-            print(str(trans_obj_a.num_exons) + " " + str(trans_obj_b.num_exons))
+            print((trans_a + " " + trans_b))
+            print((str(trans_obj_a.num_exons) + " " + str(trans_obj_b.num_exons)))
             sys.exit()
         
             
@@ -2321,7 +2321,7 @@ class TransGroup:
         self.group_count += 1
 
 
-        print("invoke merge_a_b_groups_nocap " + str(self.group_count )+ " " + trans_a + " " +trans_b )
+        print(("invoke merge_a_b_groups_nocap " + str(self.group_count )+ " " + trans_a + " " +trans_b ))
         #only cap lib trans should be used for merging groups
         if len(list(self.trans_group_dict[trans_a].keys())) > 1:
         #    if log_flag == "log_on":
@@ -2337,8 +2337,8 @@ class TransGroup:
 
         if trans_obj_a.num_exons != trans_obj_b.num_exons:
             print("Error trans_a does not same num exons as trans_b")
-            print(trans_a + " " + trans_b)
-            print(str(trans_obj_a.num_exons) + " " + str(trans_obj_b.num_exons))
+            print((trans_a + " " + trans_b))
+            print((str(trans_obj_a.num_exons) + " " + str(trans_obj_b.num_exons)))
             sys.exit()
 
         a_group_num_list = list(self.trans_group_dict[trans_a].keys())
@@ -2572,7 +2572,7 @@ def hunter_prey_nocap(nocap_trans_obj_list,trans_obj_dict,transgroup):
     sub_exon_cluster_dict = {} # sub_exon_cluster_dict[num exons][cluster id] = 1
 
     print("running hunter_prey_nocap") ###################################################  troubleshooting
-    print(str(len(nocap_trans_obj_list))) ###################################################  troubleshooting
+    print((str(len(nocap_trans_obj_list)))) ###################################################  troubleshooting
 
     for trans_obj in nocap_trans_obj_list:        
         this_strand = trans_obj.strand
@@ -2658,7 +2658,7 @@ def hunter_prey_nocap(nocap_trans_obj_list,trans_obj_dict,transgroup):
 
                 used_hunter_dict[hunter_cluster_id] = 1
 
-                print("hunter id unsearched_count: " + str(hunter_cluster_id)) ###################################################  troubleshooting
+                print(("hunter id unsearched_count: " + str(hunter_cluster_id))) ###################################################  troubleshooting
                 print(ungrouped_cluster_list) ###################################################  troubleshooting
     
                 unsearched_count = 1
@@ -2690,7 +2690,7 @@ def hunter_prey_nocap(nocap_trans_obj_list,trans_obj_dict,transgroup):
 
                     this_ungrouped_trans_obj_list = list(ungrouped_trans_obj_dict.keys())
 
-                    print("hunter id new_hunter: " + str(hunter_cluster_id)) ###################################################  troubleshooting
+                    print(("hunter id new_hunter: " + str(hunter_cluster_id))) ###################################################  troubleshooting
                     print(unsearched_cluster_list) ###################################################  troubleshooting
                     print(this_ungrouped_trans_obj_list) ###################################################  troubleshooting
                     print(ungrouped_count) ###################################################  troubleshooting
@@ -2874,7 +2874,7 @@ def hunter_prey_nocap(nocap_trans_obj_list,trans_obj_dict,transgroup):
                             elif hunter_num_exons > prey_num_exons: #add shorter to longer
                                 transgroup.add_a_to_b_group_nocap(prey_cluster_id,hunter_cluster_id)
                                 sub_length_cluster_dict[prey_cluster_id] = 1
-                                print("sub_length_cluster_dict : hunter - " +  hunter_cluster_id + "; prey - " + prey_cluster_id)
+                                print(("sub_length_cluster_dict : hunter - " +  hunter_cluster_id + "; prey - " + prey_cluster_id))
                                 
                                 #this_sub_exon_cluster_dict[prey_exon_level].pop(prey_cluster_id)  ######### 2019/06/06
                                 
@@ -3006,7 +3006,7 @@ def simplify_gene(trans_obj_list,trans_obj_dict): # goes through transcripts in 
     #### Collect transcripts into groups of capped and no cap
     ############################################
     
-    for i in xrange(len(trans_obj_list)):
+    for i in range(len(trans_obj_list)):
         trans_obj = trans_obj_list[i]
         uniq_trans_id = trans_obj.uniq_trans_id
         strand = trans_obj.strand
@@ -3204,7 +3204,7 @@ def process_trans_group(trans_line_list, total_gene_count):
     for gene_start in reverse_gene_start_trans_dict:
         all_start_gene_dict[gene_start] = 1
     
-    all_start_list = all_start_gene_dict.keys()
+    all_start_list = list(all_start_gene_dict.keys())
     
     all_start_list.sort()
     
@@ -3213,14 +3213,14 @@ def process_trans_group(trans_line_list, total_gene_count):
 
         #if a forward and reverse gene start at the same place use this to make the the forward strand gene is represented first
         if gene_start in forward_gene_start_trans_dict:
-            uniq_trans_id_list = forward_gene_start_trans_dict[gene_start].keys()
+            uniq_trans_id_list = list(forward_gene_start_trans_dict[gene_start].keys())
             trans_obj_list = []
             for uniq_trans_id in uniq_trans_id_list:
                 trans_obj_list.append(trans_obj_dict[uniq_trans_id])
             gene_trans_obj_list.append(trans_obj_list)
         
         if gene_start in reverse_gene_start_trans_dict:
-            uniq_trans_id_list = reverse_gene_start_trans_dict[gene_start].keys()
+            uniq_trans_id_list = list(reverse_gene_start_trans_dict[gene_start].keys())
             trans_obj_list = []
             for uniq_trans_id in uniq_trans_id_list:
                 trans_obj_list.append(trans_obj_dict[uniq_trans_id])
@@ -3247,7 +3247,7 @@ def process_trans_group(trans_line_list, total_gene_count):
                 tmp_trans_id = "G" + str(total_gene_count) + ".tmp." + str(tmp_count)
                 merged_obj = Merged(tmp_trans_id)
                 
-                match_trans_id_list = match_group_trans_dict[match_group_num].keys()
+                match_trans_id_list = list(match_group_trans_dict[match_group_num].keys())
                 match_trans_obj_list = []
                 for match_trans_id in match_trans_id_list:
                     match_trans_obj = trans_obj_dict[match_trans_id]
@@ -3278,7 +3278,7 @@ def process_trans_group(trans_line_list, total_gene_count):
                     match_trans_obj_list[0].uniq_trans_id
                     e_start_trans_dict = {}
                     e_end_trans_dict = {}
-                    for z in xrange(len(exon_start_list)):
+                    for z in range(len(exon_start_list)):
                         e_start_trans_dict[exon_start_list[z]] = {}
                         e_start_trans_dict[exon_start_list[z]][match_trans_obj_list[0].uniq_trans_id] = 1
                         
@@ -3373,7 +3373,7 @@ for file_line in filelist_file_contents:
     file_line_split = file_line.split("\t")
     
     if len(file_line_split) != 4:
-        print("Error with " + filelist_file )
+        print(("Error with " + filelist_file ))
         print(file_line)
         print("Please make sure it is tab separated with no empty lines")
         sys.exit()

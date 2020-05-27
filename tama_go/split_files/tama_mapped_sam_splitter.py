@@ -45,7 +45,7 @@ if bam_flag == "BAM":
     sam_file_list = p.communicate()
     sam_file_contents = sam_file_list[0].split("\n")
 
-    print(len(sam_file_contents))
+    print((len(sam_file_contents)))
 
 elif bam_flag == "SAM":
     sam_file_obj = open(sam_file)
@@ -83,7 +83,7 @@ for line in sam_file_contents:
 
     sam_count += 1
     if sam_count % 10000 == 0:
-        print("sam count " + str(sam_count))
+        print(("sam count " + str(sam_count)))
 
     read_id = line_split[0]
     sam_flag = int(line_split[1])

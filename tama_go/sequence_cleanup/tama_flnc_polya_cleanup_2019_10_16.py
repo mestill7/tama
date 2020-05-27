@@ -100,7 +100,7 @@ for seq_record in SeqIO.parse(fasta_file, "fasta"):
 
         pre_tail_index = pre_tail_index + 1
         check_boundary_count += 1
-        print(str(pre_tail_index) + ": " + str(seq_string_list[pre_tail_index]))
+        print((str(pre_tail_index) + ": " + str(seq_string_list[pre_tail_index])))
 
 
         if pre_tail_index > -1: # dont let pre tail index wrap around
